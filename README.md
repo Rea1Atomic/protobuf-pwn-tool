@@ -42,3 +42,7 @@ options:
 
 ***手动获取PMD地址后传入并解析:***  
 `python3 pbpt.py -f test -a 0xcafe 0xdead 0xbeef`
+
+## 测试
+
+可自行编译test_pack中的代码用于测试。

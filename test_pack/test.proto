@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package test;
+
+// 枚举类型示例
+enum Status {
+    UNKNOWN = 0;
+    OK = 1;
+    ERROR = 2;
+}
+
+// 嵌套的 message 类型示例
+message Address {
+    string street = 1;
+    string city = 2;
+    string zip_code = 3;
+}
+
+// 主 message 类型示例
+message Person {
+    string name = 1;
+    int32 id = 2;
+    Status status = 3;
+    Address address = 4;
+    repeated string emails = 5;
+}
+
