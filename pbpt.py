@@ -1,5 +1,5 @@
 from enum import Enum
-from pwn import u32, u64, ELF, context, log
+from pwn import u32, u64, p32, ELF, context, log
 
 import argparse
 
@@ -106,7 +106,7 @@ class PbEnumDescriptor:
 
 class PbFieldDescriptor:
     def __init__(self, vaddr: int):
-        log.debug(f'Initial a new field by vaddr: {hex(vaddr)}')
+        log.debug(f'Try to initialize a new field by vaddr: {hex(vaddr)} ...')
         self.vaddr = vaddr
         name_addr = u64(elf.read(vaddr, 8))
         self.name = read_cstr_by_vaddr(name_addr)
@@ -291,10 +291,18 @@ def handle_by_addr() -> None:
         
 
 def handle_by_auto() -> None:
+    #try to find pmd by symbol table
     for sym_name, sym_addr in elf.sym.items():
         if sym_name.endswith('__descriptor') and not sym_name.startswith('got'):
             msg_descriptor_addr_list.append(sym_addr)
-            log.info(f'Found a msg descriptor: {sym_name} --> {hex(sym_addr)}')
+            log.info(f'Found a msg descriptor by symbol: {sym_name} --> {hex(sym_addr)}')
+
+    #try to find pmd by magic 0x28aaeef9
+    magic = p32(0x28aaeef9)
+    for addr in elf.search(magic):
+            if not addr in msg_descriptor_addr_list:
+                msg_descriptor_addr_list.append(addr)
+                log.info(f'Found a msg descriptor by magic (addr: {hex(addr)})')
             
     if not len(msg_descriptor_addr_list):
         log.error('Auto analyzation can\'t find any msg descriptor!')
