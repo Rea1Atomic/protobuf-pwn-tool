@@ -4,7 +4,7 @@
 
 ## 简介
 
-基于pwntools编写的protobuf小工具，帮助ctfer快速逆向protobuf协议结构体。
+基于pwntools编写的protobuf小工具，帮助ctfer快速逆向protobuf协议结构体。一键生成.proto文件
 仅可处理x64 Linux ELF。
 
 也许是由于protobuf-c并不受google官方支持，pbtk工具在大部分情况下无法解决ctf pwn中的protobuf题
